@@ -11,7 +11,7 @@ scriptDir=$(pwd)
 # Set variables
 buildDir="${scriptDir}/../../build"
 iconsDir="${buildDir}/Icons.iconset"
-iconFile="${scriptDir}/../../data/pixmaps/scalable/darktable_macos_icon.svg"
+iconFile="${scriptDir}/../../branding/logo.svg"
 
 # ensure clean build
 rm -rf "${iconsDir}"

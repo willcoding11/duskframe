@@ -88,7 +88,7 @@ if(NOT WIN32)
       )
     add_dependencies(darktable.desktop_file validate_darktable_desktop)
   endif()
-  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.darktable.darktable.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications COMPONENT DTApplication)
+  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.darktable.darktable.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications RENAME ${DT_BRAND_ID}.desktop COMPONENT DTApplication)
 
   if(${VALIDATE_APPDATA_FILE})
     add_custom_command(
@@ -112,7 +112,7 @@ if(NOT WIN32)
 
   add_custom_target(darktable.appdata_file ALL DEPENDS ${DARKTABLE_SHAREDIR}/metainfo/org.darktable.darktable.appdata.xml)
 
-  install(FILES ${DARKTABLE_SHAREDIR}/metainfo/org.darktable.darktable.appdata.xml DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo COMPONENT DTApplication)
+  install(FILES ${DARKTABLE_SHAREDIR}/metainfo/org.darktable.darktable.appdata.xml DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo RENAME ${DT_BRAND_ID}.appdata.xml COMPONENT DTApplication)
 endif(NOT WIN32)
 
 #

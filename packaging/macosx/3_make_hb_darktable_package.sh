@@ -18,10 +18,13 @@ export PATH="/usr/bin:/bin:$PATH"
 scriptDir=$(dirname "$0")
 cd "$scriptDir"/
 
+# product name / bundle id come from branding/brand.env (BRAND_NAME, BRAND_ID)
+. ../../branding/brand.env
+
 # Define base variables
 buildDir="../../build/macosx"
 dtPackageDir="$buildDir"/package
-dtAppName="darktable"
+dtAppName="$BRAND_NAME"
 dtWorkingDir="$dtPackageDir"/"$dtAppName".app
 dtResourcesDir="$dtWorkingDir"/Contents/Resources
 dtExecDir="$dtWorkingDir"/Contents/MacOS
@@ -218,6 +221,7 @@ cp Icons.icns "$dtResourcesDir"/
 # Set version information
 sed -i '' 's|{VERSION}|'$(echo $dt_version)'|' "$dtWorkingDir"/Contents/Info.plist
 sed -i '' 's|{COMMITS}|'$(echo $dt_commit)'|' "$dtWorkingDir"/Contents/Info.plist
+sed -i '' "s|{BRAND_NAME}|$BRAND_NAME|; s|{BRAND_ID}|$BRAND_ID|" "$dtWorkingDir"/Contents/Info.plist
 
 # Generate settings.ini
 echo "[Settings]
@@ -344,10 +348,10 @@ cp -L "$homebrewHome"/share/themes/Mac/gtk-3.0/gtk-keys.css "$dtResourcesDir"/sh
 # Sign app bundle
 if [ -n "$CODECERT" ]; then
     # Use certificate if one has been provided
-    find ${dtWorkingDir}/Contents/Resources/lib -type f -exec codesign --verbose --force --options runtime -i "org.darktable" -s "${CODECERT}" \{} \;
-    codesign --deep --verbose --force --options runtime -i "org.darktable" -s "${CODECERT}" ${dtWorkingDir}
+    find ${dtWorkingDir}/Contents/Resources/lib -type f -exec codesign --verbose --force --options runtime -i "$BRAND_ID" -s "${CODECERT}" \{} \;
+    codesign --deep --verbose --force --options runtime -i "$BRAND_ID" -s "${CODECERT}" ${dtWorkingDir}
 else
     # Use ad-hoc signing and preserve metadata
-    find ${dtWorkingDir}/Contents/Resources/lib -type f -exec codesign --verbose --force --preserve-metadata=entitlements,requirements,flags,runtime -i "org.darktable" -s - \{} \;
-    codesign --deep --verbose --force --preserve-metadata=entitlements,requirements,flags,runtime -i "org.darktable" -s - ${dtWorkingDir}
+    find ${dtWorkingDir}/Contents/Resources/lib -type f -exec codesign --verbose --force --preserve-metadata=entitlements,requirements,flags,runtime -i "$BRAND_ID" -s - \{} \;
+    codesign --deep --verbose --force --preserve-metadata=entitlements,requirements,flags,runtime -i "$BRAND_ID" -s - ${dtWorkingDir}
 fi

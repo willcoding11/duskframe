@@ -6,7 +6,12 @@
 // clang-format off
 // it butchers @@ and ${} :(
 
-#define PACKAGE_NAME "@CMAKE_PROJECT_NAME@"
+// user-visible product name and per-user directory name; both come from
+// branding/brand.env (see cmake/Branding.cmake). The CMake project and the
+// binaries stay "darktable" internally.
+#define PACKAGE_NAME "@DT_BRAND_NAME@"
+#define PACKAGE_SLUG "@DT_BRAND_SLUG@"
+#define PACKAGE_BRAND_SITE "@DT_BRAND_SITE@"
 #define PACKAGE_BUGREPORT "https://github.com/darktable-org/darktable/issues/new/choose"
 #define PACKAGE_DOCS "https://www.darktable.org/resources/"
 

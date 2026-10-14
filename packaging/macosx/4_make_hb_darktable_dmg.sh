@@ -10,13 +10,14 @@ trap 'echo "${BASH_SOURCE[0]}{${FUNCNAME[0]}}:${LINENO}: Error: command \`${BASH
 # Ensure we use system tools (BSD sed, find, etc.) even if user has GNU tools in PATH
 export PATH="/usr/bin:/bin:$PATH"
 
-# Define application name
-PROGN=darktable
-
 # Go to directory of script
 scriptDir=$(dirname "$0")
 cd "$scriptDir"/
 scriptDir=$(pwd)
+
+# Define application name (from branding/brand.env)
+. "$scriptDir"/../../branding/brand.env
+PROGN="$BRAND_NAME"
 buildDir="${scriptDir}/../../build/macosx"
 
 cd "$buildDir"/
@@ -106,5 +107,5 @@ rm -rf package/.background
 
 # Sign dmg image when a certificate has been provided
 if [ -n "$CODECERT" ]; then
-    codesign --deep --verbose --force --options runtime -i "org.darktable" -s "${CODECERT}" "${DMG}".dmg
+    codesign --deep --verbose --force --options runtime -i "$BRAND_ID" -s "${CODECERT}" "${DMG}".dmg
 fi

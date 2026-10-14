@@ -1,13 +1,15 @@
 
-#define MyAppName "darktable"
+; Product name/slug/site come from branding/brand.env via cmake/Branding.cmake.
+; The executables keep their upstream names (darktable.exe).
+#define MyAppName "${DT_BRAND_NAME}"
 #define MyAppVersion "${PROJECT_VERSION}"
 #define MyAppVersionLength Len(MyAppVersion)
 
 #define CurrentYear GetDateTimeString('yyyy', '', '')
-#define MyAppCopyright "Copyright © 2009-" + CurrentYear + " darktable developers"
+#define MyAppCopyright "Copyright © 2009-" + CurrentYear + " darktable developers and ${DT_BRAND_NAME} contributors"
 
-#define MyAppPublisher "darktable team"
-#define MyAppURL "https://darktable.org/"
+#define MyAppPublisher "${DT_BRAND_NAME} project (based on darktable)"
+#define MyAppURL "${DT_BRAND_SITE}"
 #define MyAppExeName "darktable.exe"
 #define MyAppCliExeName "darktable-cli.exe"
 
@@ -67,7 +69,7 @@ AllowNoIcons=yes
 
 PrivilegesRequiredOverridesAllowed=dialog
 
-OutputBaseFilename=darktable-{#MyAppVersion}-${ARCH_STRING}
+OutputBaseFilename=${DT_BRAND_SLUG}-{#MyAppVersion}-${ARCH_STRING}
 
 ; When this directive is set, the compiler will create a manifest file
 ; detailing information about the files compiled into Setup.
@@ -119,13 +121,13 @@ Source: "LICENSE";  DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignorevers
 ;
 ; Add "Import folder into darktable" menu item to the right-click context menu on folders.
 ;
-Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderIntoDarktable"; \
+Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderInto{#MyAppName}"; \
   ValueType: string; Flags: uninsdeletekey; \
-  ValueData: "Import folder into darktable"
-Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderIntoDarktable"; \
+  ValueData: "Import folder into {#MyAppName}"
+Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderInto{#MyAppName}"; \
   ValueType: string; Flags: uninsdeletekey; \
   ValueName: "Icon"; ValueData: """{app}\bin\{#MyAppExeName}"",0"
-Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderIntoDarktable\command"; \
+Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderInto{#MyAppName}\command"; \
   ValueType: string; Flags: uninsdeletekey; \
   ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""
 
@@ -133,16 +135,16 @@ Root: HKA; Subkey: "SOFTWARE\Classes\Directory\shell\ImportFolderIntoDarktable\c
 ; Add "Import into darktable" menu item to the right-click context menu on images.
 ; Files that are not images will not be affected due to the "AppliesTo" filter.
 ;
-Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageIntoDarktable"; \
+Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageInto{#MyAppName}"; \
   ValueType: string; Flags: uninsdeletekey; \
-  ValueData: "Import into darktable"
-Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageIntoDarktable"; \
+  ValueData: "Import into {#MyAppName}"
+Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageInto{#MyAppName}"; \
   ValueType: string; Flags: uninsdeletekey; \
   ValueName: "Icon"; ValueData: """{app}\bin\{#MyAppExeName}"",0"
-Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageIntoDarktable"; \
+Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageInto{#MyAppName}"; \
   ValueType: string; Flags: uninsdeletekey; \
   ValueName: "AppliesTo"; ValueData: "System.Kind:=picture"
-Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageIntoDarktable\command"; \
+Root: HKA; Subkey: "SOFTWARE\Classes\*\shell\ImportImageInto{#MyAppName}\command"; \
   ValueType: string; Flags: uninsdeletekey; \
   ValueData: """{app}\bin\{#MyAppExeName}"" ""%1"""
 
@@ -195,11 +197,11 @@ Name: "{group}\{#MyAppName}"; Filename: "{app}\bin\{#MyAppExeName}"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\bin\{#MyAppExeName}"; Tasks: desktopicon
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; \
-  Filename: "{app}\bin\{#MyAppName}"; WorkingDir: "{app}"; Tasks: quicklaunchicon
+  Filename: "{app}\bin\{#MyAppExeName}"; WorkingDir: "{app}"; Tasks: quicklaunchicon
 
 [Run]
 Filename: "https://docs.darktable.org/usermanual/development/"; \
-  Description: "Open darktable user manual"; \
+  Description: "Open the darktable user manual"; \
   Flags: postinstall shellexec runasoriginaluser skipifsilent
 
 Filename: "{app}\bin\{#MyAppExeName}"; \

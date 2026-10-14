@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2009-2025 darktable developers.
+<!-- Copyright (C) 2009-2025 darktable developers (and Wrenlight contributors).
 -->
 <component type="desktop">
-  <id>org.darktable.darktable</id>
-  <name>darktable</name>
-  <launchable type="desktop-id">org.darktable.darktable.desktop</launchable>
+  <id>org.wrenlight.Wrenlight</id>
+  <name>Wrenlight</name>
+  <launchable type="desktop-id">org.wrenlight.Wrenlight.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <_summary>Organize and develop images from digital cameras</_summary>
   <translation type="gettext">darktable</translation>
   <description>
     <_p>
-      darktable manages your camera raw files and images in a database, lets you
+      Wrenlight, a fork of darktable, manages your camera raw files and images in a database, lets you
       view them through lighttable mode and develop/enhance them in darkroom mode.
     </_p>
     <_p>
@@ -19,32 +19,10 @@
       tethering, print and a slideshow.
     </_p>
     <_p>
-      darktable supports most modern cameras' raw formats, and does all
+      Wrenlight supports most modern cameras' raw formats, and does all
       of its processing at very high precision.
     </_p>
   </description>
-  <screenshots>
-    <screenshot width="1920" height="1080">
-      <image>https://www.darktable.org/images/darktable-appdata-lighttable.jpg</image>
-      <_caption>Virtual light table, showing a collection</_caption>
-    </screenshot>
-    <screenshot width="1920" height="1080" type="default">
-      <image>https://www.darktable.org/images/darktable-appdata-darkroom1.jpg</image>
-      <_caption>Virtual dark room with an opened image</_caption>
-    </screenshot>
-    <screenshot width="1920" height="1080">
-      <image>https://www.darktable.org/images/darktable-appdata-darkroom2.jpg</image>
-      <_caption>Virtual dark room, sharpening an image</_caption>
-    </screenshot>
-    <screenshot width="1920" height="1080">
-      <image>https://www.darktable.org/images/darktable-appdata-map.jpg</image>
-      <_caption>Show images on a map</_caption>
-    </screenshot>
-    <screenshot width="1920" height="1080">
-      <image>https://www.darktable.org/images/darktable-appdata-print.jpg</image>
-      <_caption>Print your images</_caption>
-    </screenshot>
-  </screenshots>
   <content_rating type="oars-1.1" />
   <releases>
     <release date="2026-10-04" version="5.6.2"/>
@@ -82,11 +60,10 @@
     <release date="2019-03-07" version="2.6.1"/>
     <release date="2018-12-24" version="2.6.0"/>
   </releases>
-  <developer id="org.darktable">
-    <name>darktable developers</name>
+  <developer id="org.wrenlight">
+    <name>Wrenlight contributors and darktable developers</name>
   </developer>
-  <url type="homepage">https://www.darktable.org/</url>
-  <url type="bugtracker">https://github.com/darktable-org/darktable/issues</url>
+  <url type="homepage">https://willcoding11.github.io/wrenlight</url>
+  <url type="bugtracker">https://github.com/willcoding11/wrenlight/issues</url>
   <url type="help">https://www.darktable.org/resources/</url>
-  <update_contact>darktable-dev@lists.darktable.org</update_contact>
 </component>

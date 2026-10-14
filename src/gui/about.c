@@ -31,13 +31,19 @@ void darktable_show_about_dialog()
 #endif
   gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(dialog), PACKAGE_NAME);
   gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), darktable_package_version);
-  char *copyright = g_strdup_printf(_("copyright (c) the authors 2009-%s"),
-                                    darktable_last_commit_year);
+  char *copyright = g_strdup_printf(_("copyright (c) the darktable authors 2009-%s
+"
+                                      "and the %s contributors"),
+                                    darktable_last_commit_year, PACKAGE_NAME);
   gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), copyright);
   g_free(copyright);
   gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog),
-                                _("organize and develop images from digital cameras"));
-  gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), "https://www.darktable.org/");
+                                _("organize and develop images from digital cameras
+
+"
+                                  "based on darktable, a free software project licensed under GPL-3.0"));
+  gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(dialog), GTK_LICENSE_GPL_3_0);
+  gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), PACKAGE_BRAND_SITE);
   gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(dialog), "website");
   const dt_logo_season_t season = dt_util_get_logo_season();
   char *icon;
@@ -54,6 +60,11 @@ void darktable_show_about_dialog()
 
   const char *final[] = { str, NULL };
   gtk_about_dialog_add_credit_section (GTK_ABOUT_DIALOG(dialog), _("and..."), final);
+
+  // upstream credit: this program is a fork of darktable
+  const char *upstream[] = { "darktable https://www.darktable.org/",
+                             "https://github.com/darktable-org/darktable", NULL };
+  gtk_about_dialog_add_credit_section (GTK_ABOUT_DIALOG(dialog), _("based on"), upstream);
 
   gtk_about_dialog_set_translator_credits(GTK_ABOUT_DIALOG(dialog),
                                           _("translator-credits"));

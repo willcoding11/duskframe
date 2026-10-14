@@ -1,0 +1,25 @@
+# Reads branding/brand.env (the single source of truth for the fork's name)
+# and exposes it to CMake as DT_BRAND_NAME, DT_BRAND_SLUG, DT_BRAND_ID,
+# DT_BRAND_GH_USER, DT_BRAND_GH_REPO, DT_BRAND_SITE.
+# Falls back to darktable's own values if the file is missing.
+set(DT_BRAND_NAME "darktable")
+set(DT_BRAND_SLUG "darktable")
+set(DT_BRAND_ID "org.darktable.darktable")
+set(DT_BRAND_GH_USER "darktable-org")
+set(DT_BRAND_GH_REPO "darktable")
+set(DT_BRAND_SITE "https://www.darktable.org/")
+
+set(_brand_env "${CMAKE_SOURCE_DIR}/branding/brand.env")
+if(EXISTS "${_brand_env}")
+  set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${_brand_env}")
+  file(STRINGS "${_brand_env}" _brand_lines REGEX "^BRAND_[A-Z_]+=")
+  foreach(_line IN LISTS _brand_lines)
+    # BRAND_KEY="value"  # optional comment   (quotes optional)
+    if(_line MATCHES "^BRAND_([A-Z_]+)=\"([^\"]*)\"")
+      set(DT_BRAND_${CMAKE_MATCH_1} "${CMAKE_MATCH_2}")
+    elseif(_line MATCHES "^BRAND_([A-Z_]+)=([^ \t#]*)")
+      set(DT_BRAND_${CMAKE_MATCH_1} "${CMAKE_MATCH_2}")
+    endif()
+  endforeach()
+endif()
+message(STATUS "Brand: ${DT_BRAND_NAME} (${DT_BRAND_SLUG}, ${DT_BRAND_ID})")

@@ -10,6 +10,8 @@ option(USE_OPENMP "Use OpenMP threading support." ON)
 option(USE_OPENCL "Use OpenCL support." ON)
 option(USE_GRAPHICSMAGICK "Use GraphicsMagick library for image import." ON)
 option(USE_IMAGEMAGICK "Use ImageMagick library for image import." OFF)
+include(${CMAKE_SOURCE_DIR}/cmake/Branding.cmake)
+
 option(USE_DARKTABLE_PROFILING OFF)
 option(CUSTOM_CFLAGS "Don't override compiler optimization flags." OFF)
 option(BINARY_PACKAGE_BUILD "Sets march optimization to generic" OFF)
