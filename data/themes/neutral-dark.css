@@ -30,9 +30,9 @@
 @define-color nd_bg_header  #383838;   /* module headers, buttons */
 @define-color nd_bg_hover   #444444;
 @define-color nd_border     #3d3d3d;
-@define-color nd_text       #b8b8b8;
+@define-color nd_text       #c4c4c4;
 @define-color nd_text_head  #d6d6d6;
-@define-color nd_text_dim   #7d7d7d;
+@define-color nd_text_dim   #9c9c9c;
 @define-color nd_accent     #4a9eff;
 @define-color nd_accent_dim #3a78c2;
 
@@ -92,7 +92,7 @@
 /* Views */
 @define-color darkroom_bg_color #1e1e1e;
 @define-color lighttable_bg_color #1e1e1e;
-@define-color lighttable_bg_font_color @nd_text;
+@define-color lighttable_bg_font_color #cfcfcf;
 
 /* Lighttable and filmstrip */
 @define-color thumbnail_font_color #d0d0d0;
@@ -121,7 +121,7 @@
   background-color: @nd_bg_header;
   border: none;
   border-bottom: 1px solid @nd_border;
-  padding: 0.55em 0.6em;
+  padding: 0.3em 0.3em;
 }
 
 #iop-expander.dt_module_active #module-header
@@ -137,11 +137,22 @@
 #iop-module-name,
 #lib-module-name
 {
-  font-size: 0.86em;
+  font-size: 0.95em;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 0;
   color: @nd_text_head;
   background-color: transparent;
+}
+
+/* View switcher: keep inactive views readable */
+#view-label
+{
+  color: alpha(@nd_text, 0.85);
+}
+
+#view-label:selected
+{
+  color: @nd_text_head;
 }
 
 /* Section labels in panels */
@@ -149,9 +160,9 @@
 #lib-panel-label
 {
   color: @nd_text_head;
-  font-size: 0.9em;
-  letter-spacing: 1px;
-  padding: 0.3em 0.2em 0.3em 0.6em;
+  font-size: 0.95em;
+  letter-spacing: 0;
+  padding: 0.2em 0.2em 0.2em 0.4em;
 }
 
 /* Collapse affordance: section expanders get a clear, indented header */

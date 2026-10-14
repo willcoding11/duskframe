@@ -139,11 +139,11 @@ void dt_request_console_notice(void)
 
 static void _show_console_notice(void)
 {
-  const char *notice = _("this console window is required by darktable on this "
+  const char *notice = _("this console window is required by " PACKAGE_NAME " on this "
                          "version of Windows.\n"
-                         "on Windows 11 24H2 and later, darktable normally runs "
+                         "on Windows 11 24H2 and later, " PACKAGE_NAME " normally runs "
                          "without this window.\n"
-                         "do not close it or press ctrl+c while darktable is running.\n"
+                         "do not close it or press ctrl+c while " PACKAGE_NAME " is running.\n"
                          "it will close automatically when darktable exits.\n");
   gchar **notice_lines = g_strsplit(notice, "\n", -1);
   gchar *console_notice = g_strjoinv("\r\n", notice_lines);
@@ -1671,9 +1671,9 @@ int dt_init(int argc,
           "%s\n"
           "\n"
           "please fix this and then run darktable again"), which_failed);
-      dt_gui_show_standalone_yes_no_dialog(_("darktable - unable to create directories"),
+      dt_gui_show_standalone_yes_no_dialog(_("" PACKAGE_NAME " - unable to create directories"),
                                            user_dirs_failure_text,
-                                           _("_quit darktable"),
+                                           _("_quit " PACKAGE_NAME ""),
                                            NULL);
       // There is no REAL need to free the string before exiting, but we do it
       // to avoid creating a code pattern that could be mistakenly copy-pasted
@@ -2607,11 +2607,11 @@ void dt_configure_runtime_performance(const int old, char *info)
   if(old < 5)
   {
     g_strlcat(info, INFO_HEADER, DT_PERF_INFOSIZE);
-    g_strlcat(info, _("the user interface and the underlying internals for tuning darktable performance have changed."), DT_PERF_INFOSIZE);
+    g_strlcat(info, _("the user interface and the underlying internals for tuning " PACKAGE_NAME " performance have changed."), DT_PERF_INFOSIZE);
     g_strlcat(info, "\n", DT_PERF_INFOSIZE);
     g_strlcat(info, _("you won't find headroom and friends any longer, instead in preferences/processing use:"), DT_PERF_INFOSIZE);
     g_strlcat(info, "\n  ", DT_PERF_INFOSIZE);
-    g_strlcat(info, _("1) darktable resources"), DT_PERF_INFOSIZE);
+    g_strlcat(info, _("1) " PACKAGE_NAME " resources"), DT_PERF_INFOSIZE);
     g_strlcat(info, "\n  ", DT_PERF_INFOSIZE);
     g_strlcat(info, _("2) tune OpenCL performance"), DT_PERF_INFOSIZE);
     g_strlcat(info, "\n\n", DT_PERF_INFOSIZE);

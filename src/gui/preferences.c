@@ -645,7 +645,7 @@ void dt_gui_preferences_show()
   gtk_widget_destroy(_preferences_dialog);
 
   if(restart_required)
-    dt_control_log(_("darktable needs to be restarted for settings to take effect"));
+    dt_control_log(_("" PACKAGE_NAME " needs to be restarted for settings to take effect"));
 
   dt_start_backthumbs_crawler();
   DT_CONTROL_SIGNAL_RAISE(DT_SIGNAL_PREFERENCES_CHANGE);

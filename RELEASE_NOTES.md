@@ -240,3 +240,9 @@ Support for the following cameras is suspended because no samples are available 
 - Slovenian
 - Swedish
 - Ukrainian
+
+## Changes in v0.1.1
+
+- Fixed the oversized, clipped logo/wordmark in the top-left header.
+- User-facing dialogs and hints now say Duskframe instead of darktable (welcome screen, startup/database dialogs, help text).
+- Theme: module names no longer truncate, slightly brighter dim text.

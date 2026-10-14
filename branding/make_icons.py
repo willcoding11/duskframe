@@ -166,10 +166,13 @@ def main():
 
     # splash / welcome logo button (seasonal variants are all the same logo)
     for name in ("idbutton", "idbutton-1", "idbutton-2", "idbutton-3"):
-        write("data/pixmaps/%s.svg" % name, svg)
+        # intrinsic size must stay 40x40 like upstream: the GUI draws it at native size
+        write("data/pixmaps/%s.svg" % name, svg.replace('width="512" height="512"', 'width="40" height="40"', 1))
         save(render(shapes, 40), "data/pixmaps/%s.png" % name)
     write("data/pixmaps/darktable.svg", wordmark_svg())
-    write("data/pixmaps/dt_text.svg", wordmark_svg())
+    # header wordmark is drawn at native size too (upstream: 103 x 18)
+    write("data/pixmaps/dt_text.svg",
+          wordmark_svg().replace('width="640" height="128"', 'width="103" height="20.6"', 1))
 
     # macOS icns
     save(render(shapes, 1024), "packaging/macosx/Icons.icns",
