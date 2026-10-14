@@ -1,7 +1,8 @@
-# Push-to-fork checklist
-1. User forks https://github.com/darktable-org/darktable on github.com (account willcoding11), renames it (e.g. duskframe or final name), sends the link.
-2. Update `darktable-fork/branding/brand.env` (BRAND_GH_REPO, BRAND_SITE, final BRAND_NAME), run `python branding/apply_brand.py --icons`, `python site/sync-installers.py`.
-3. `cd darktable-fork && git remote add fork https://github.com/<user>/<repo>.git && git push fork lr-fork:main` (gh is already authed as willcoding11).
-4. Repo Settings -> Pages -> Source: GitHub Actions. Settings -> Actions: allow workflows.
-5. `git tag v0.1.0 && git push fork v0.1.0`; watch Actions; iterate on failures (see docs/CI.md).
-6. Check release asset names match docs/SITE_AND_INSTALLERS.md; test install one-liners.
+# Fork status (done 2026-10-13)
+- Name: Duskframe (brand.env). Fork: https://github.com/willcoding11/duskframe (created with gh, fork-name duskframe).
+- Local remote `fork`; branch lr-fork pushed and set as the fork's DEFAULT branch (so workflow_dispatch works). Actions enabled via API.
+- Pages workflow is manual-only and Pages is NOT enabled. No tag, no Release.
+- Run builds: `gh workflow run release.yml -R willcoding11/duskframe --ref lr-fork` (artifacts only, no Release).
+## Needs user OK
+1. Enable Pages: repo Settings -> Pages -> Source: GitHub Actions, then run the Pages workflow (or restore its push trigger).
+2. First Release: `git tag v0.1.0 && git push fork v0.1.0` (creates a public Release with all 5 assets).
