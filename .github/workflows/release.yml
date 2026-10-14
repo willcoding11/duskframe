@@ -191,7 +191,7 @@ jobs:
       matrix:
         include:
           - { os: macos-15,       arch: arm64 }    # Apple Silicon
-          - { os: macos-15-intel, arch: x86_64 }   # Intel (macos-13 was retired Dec 2025)
+          # Intel (macos-15-intel) disabled: Homebrew builds from source there, job exceeded 3h. Re-add when a bottle-based path exists.
     env:
       SLUG: ${{ needs.meta.outputs.slug }}
       CC: cc
@@ -434,6 +434,11 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+          sparse-checkout: RELEASE_NOTES.md
+          sparse-checkout-cone-mode: false
       - uses: actions/download-artifact@v8
         with:
           pattern: asset-*
@@ -445,7 +450,7 @@ jobs:
         run: |
           set -e
           cd dist
-          for f in "$SLUG-macos-arm64.dmg" "$SLUG-macos-x86_64.dmg" \
+          for f in "$SLUG-macos-arm64.dmg" \
                    "$SLUG-windows-x64-setup.exe" "$SLUG-windows-x64-portable.zip" \
                    "$SLUG-linux-x86_64.AppImage"; do
             test -s "$f" || { echo "MISSING $f"; exit 1; }
@@ -457,7 +462,8 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ needs.meta.outputs.name }} ${{ github.ref_name }}
-          prerelease: ${{ contains(github.ref_name, '-') }}
-          generate_release_notes: true
+          prerelease: true
+          body_path: RELEASE_NOTES.md
+          generate_release_notes: false
           fail_on_unmatched_files: true
           files: dist/*

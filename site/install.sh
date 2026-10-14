@@ -45,6 +45,10 @@ install_macos() {
   local file="$BRAND_SLUG-macos-$arch.dmg" app="/Applications/$BRAND_NAME.app"
   [ "$arch" = arm64 ] || [ "$arch" = x86_64 ] || { echo "Unsupported CPU: $arch" >&2; exit 1; }
   if [ "$UNINSTALL" = 1 ]; then say "Removing $app"; run rm -rf "$app"; return; fi
+  if [ "$arch" = x86_64 ]; then
+    echo "$BRAND_NAME for Intel Macs is coming soon (only Apple Silicon builds are published so far)." >&2
+    echo "Watch https://github.com/$GH_USER/$GH_REPO/releases for updates." >&2; exit 1
+  fi
   fetch "$file"
   if [ "$DRY" = 1 ]; then
     echo "[dry-run] hdiutil attach, copy *.app to /Applications, detach"; return

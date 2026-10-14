@@ -132,7 +132,7 @@
     if (rec) { rec.classList.add("rec"); }
     var hero = document.getElementById("hero-dl");
     if (rec) { hero.href = rec.href; hero.childNodes[0].nodeValue = "Download for " + names[os]; }
-    document.getElementById("hero-sub").textContent = os === "mac" ? "Apple Silicon build - Intel Macs see below" : rec ? rec.textContent.replace(/\s*\.\w+.*$/, "") : "";
+    document.getElementById("hero-sub").textContent = os === "mac" ? "Apple Silicon build - Intel Macs: coming soon" : rec ? rec.textContent.replace(/\s*\.\w+.*$/, "") : "";
   }
 
   document.querySelectorAll(".copy").forEach(function (b) {
