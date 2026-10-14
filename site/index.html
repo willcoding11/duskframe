@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wrenlight - free RAW photo editor</title>
+<meta name="description" content="A free, open-source RAW photo editor with a Lightroom-style workflow. Based on darktable.">
+<script src="config.js"></script>
+<script>
+  /* Brand block: edit branding/brand.env and run site/sync-installers.py to regenerate config.js.
+     Fallback below only applies if config.js is missing. */
+  window.BRAND = window.BRAND || { name: "Wrenlight", slug: "wrenlight", user: "willcoding11", repo: "wrenlight",
+    site: "https://willcoding11.github.io/wrenlight",
+    releases: "https://github.com/willcoding11/wrenlight/releases/latest/download",
+    repo_url: "https://github.com/willcoding11/wrenlight" };
+</script>
+<style>
+  :root { --bg:#0f1115; --panel:#171a21; --line:#272b35; --text:#e8eaf0; --muted:#9aa1b2; --accent:#f0a93b; --accent-ink:#1a1204; }
+  * { box-sizing: border-box; }
+  html { color-scheme: dark; }
+  body { margin:0; background:var(--bg); color:var(--text); font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  a { color:var(--accent); }
+  .wrap { max-width:960px; margin:0 auto; padding:0 16px; }
+  header.hero { padding:72px 0 40px; text-align:center; background:radial-gradient(600px 240px at 50% 0, #2a2112 0, transparent 70%); }
+  h1 { font-size:clamp(2.2rem,6vw,3.6rem); margin:0 0 8px; letter-spacing:-.02em; }
+  .tag { color:var(--muted); font-size:1.15rem; max-width:34rem; margin:0 auto 28px; }
+  h2 { font-size:1.35rem; margin:48px 0 14px; }
+  .btn { display:inline-block; padding:12px 20px; border-radius:10px; border:1px solid var(--line); background:var(--panel);
+         color:var(--text); text-decoration:none; font-weight:600; }
+  .btn small { display:block; font-weight:400; color:var(--muted); font-size:.8rem; }
+  .btn.primary, .btn.rec { background:var(--accent); border-color:var(--accent); color:var(--accent-ink); }
+  .btn.primary small, .btn.rec small { color:#4a3512; }
+  .grid { display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px; }
+  .card.me { border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset; }
+  .card h3 { margin:0 0 10px; font-size:1.05rem; }
+  .card .btn { display:block; margin:8px 0; }
+  .badge { font-size:.7rem; background:var(--accent); color:var(--accent-ink); border-radius:99px; padding:2px 8px; margin-left:8px; vertical-align:middle; }
+  .term { display:flex; gap:8px; align-items:stretch; margin:10px 0; }
+  .term code { flex:1; min-width:0; overflow-x:auto; white-space:nowrap; background:#0a0c10; border:1px solid var(--line);
+               border-radius:8px; padding:10px 12px; font:.85rem ui-monospace,Menlo,Consolas,monospace; }
+  .copy { cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--text); border-radius:8px; padding:0 14px; font:inherit; }
+  .copy:hover { border-color:var(--accent); }
+  .note { color:var(--muted); font-size:.9rem; margin:8px 0 0; }
+  .note b { color:var(--text); }
+  footer { margin:64px 0 32px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:.9rem; }
+  @media (max-width:520px) { .term { flex-direction:column; } .copy { padding:10px; } header.hero { padding-top:48px; } }
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <h1 data-brand="name">Wrenlight</h1>
+  <p class="tag">A free, open-source RAW photo editor with a Lightroom-style workflow. No account, no subscription.</p>
+  <a id="hero-dl" class="btn primary" href="#downloads">Download<small id="hero-sub">All platforms below</small></a>
+</div></header>
+
+<main class="wrap">
+  <section id="install">
+    <h2>Install with one command <span class="note">(recommended)</span></h2>
+    <p class="note">The command picks the right build for your machine and avoids the "unidentified developer" and SmartScreen warnings, because files fetched from the terminal are not flagged as downloaded from the internet.</p>
+    <div class="grid">
+      <div class="card" data-os="mac linux">
+        <h3>macOS and Linux</h3>
+        <div class="term"><code id="cmd-sh"></code><button class="copy" data-copy="cmd-sh">Copy</button></div>
+        <p class="note">Uninstall: add <b>-s -- --uninstall</b> after <b>bash</b>.</p>
+      </div>
+      <div class="card" data-os="win">
+        <h3>Windows (PowerShell)</h3>
+        <div class="term"><code id="cmd-ps"></code><button class="copy" data-copy="cmd-ps">Copy</button></div>
+        <p class="note">No administrator rights needed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="downloads">
+    <h2>Download</h2>
+    <div class="grid">
+      <div class="card" data-os="mac">
+        <h3>macOS <span class="badge" hidden>Your system</span></h3>
+        <a class="btn" data-file="macos-arm64.dmg" data-rec>Apple Silicon (M1 and newer)<small>.dmg - recommended on most Macs</small></a>
+        <a class="btn" data-file="macos-x86_64.dmg">Intel<small>.dmg</small></a>
+        <p class="note">The app is not notarized by Apple. After opening the .dmg on macOS 15 Sequoia or newer, go to <b>System Settings &rarr; Privacy &amp; Security &rarr; Open Anyway</b>. Using the terminal command above skips this step, so we recommend it.</p>
+      </div>
+      <div class="card" data-os="win">
+        <h3>Windows <span class="badge" hidden>Your system</span></h3>
+        <a class="btn" data-file="windows-x64-setup.exe" data-rec>Installer (64-bit)<small>.exe - SmartScreen may ask: More info &rarr; Run anyway</small></a>
+        <a class="btn" data-file="windows-x64-portable.zip">Portable<small>.zip - unzip and run, no install</small></a>
+      </div>
+      <div class="card" data-os="linux">
+        <h3>Linux <span class="badge" hidden>Your system</span></h3>
+        <a class="btn" data-file="linux-x86_64.AppImage" data-rec>AppImage (x86_64)<small>make it executable, then run</small></a>
+        <p class="note">Or use the terminal command above to add a menu entry automatically.</p>
+      </div>
+    </div>
+    <p class="note">Older versions and release notes: <a id="rel-link" href="#">GitHub Releases</a>.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">
+  <p><span data-brand="name">Wrenlight</span> is free software released under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU GPL v3</a>.
+  It is a fork of <a href="https://www.darktable.org/">darktable</a>; all credit for the underlying engine goes to the darktable authors and contributors.
+  Not affiliated with or endorsed by the darktable project.</p>
+  <p><a id="src-link" href="#">Source code</a></p>
+</div></footer>
+
+<script>
+(function () {
+  var B = window.BRAND;
+  document.title = B.name + " - free RAW photo editor";
+  document.querySelectorAll("[data-brand=name]").forEach(function (e) { e.textContent = B.name; });
+  document.getElementById("rel-link").href = B.repo_url + "/releases";
+  document.getElementById("src-link").href = B.repo_url;
+  document.getElementById("cmd-sh").textContent = "curl -fsSL " + B.site + "/install.sh | bash";
+  document.getElementById("cmd-ps").textContent = "irm " + B.site + "/install.ps1 | iex";
+  document.querySelectorAll("a[data-file]").forEach(function (a) {
+    a.href = B.releases + "/" + B.slug + "-" + a.dataset.file;
+  });
+
+  // OS detection
+  var ua = navigator.userAgent, plat = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || "";
+  var os = /android|iphone|ipad|ipod/i.test(ua) ? "other"
+         : /win/i.test(plat + ua) ? "win" : /mac/i.test(plat + ua) ? "mac" : /linux|x11|cros/i.test(plat + ua) ? "linux" : "other";
+  var names = { win: "Windows", mac: "macOS", linux: "Linux" };
+  if (names[os]) {
+    document.querySelectorAll('[data-os~="' + os + '"]').forEach(function (c) {
+      c.classList.add("me");
+      var b = c.querySelector(".badge"); if (b) b.hidden = false;
+      // move highlighted cards first inside their grid
+      c.parentNode.insertBefore(c, c.parentNode.firstChild);
+    });
+    var rec = document.querySelector('#downloads [data-os~="' + os + '"] a[data-rec]');
+    if (rec) { rec.classList.add("rec"); }
+    var hero = document.getElementById("hero-dl");
+    if (rec) { hero.href = rec.href; hero.childNodes[0].nodeValue = "Download for " + names[os]; }
+    document.getElementById("hero-sub").textContent = os === "mac" ? "Apple Silicon build - Intel Macs see below" : rec ? rec.textContent.replace(/\s*\.\w+.*$/, "") : "";
+  }
+
+  document.querySelectorAll(".copy").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var t = document.getElementById(b.dataset.copy).textContent;
+      var done = function () { b.textContent = "Copied"; setTimeout(function () { b.textContent = "Copy"; }, 1500); };
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function () { fallback(t); done(); });
+      else { fallback(t); done(); }
+    });
+  });
+  function fallback(t) { var a = document.createElement("textarea"); a.value = t; document.body.appendChild(a); a.select();
+    try { document.execCommand("copy"); } catch (e) {} a.remove(); }
+})();
+</script>
+</body>
+</html>
