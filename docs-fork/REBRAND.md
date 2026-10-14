@@ -1,6 +1,6 @@
 # Rebrand notes
 
-Working codename: **Wrenlight** (placeholder). The name lives in one file: `darktable-fork/branding/brand.env`.
+Working codename: **Duskframe** (placeholder). The name lives in one file: `darktable-fork/branding/brand.env`.
 
 ## How to rename (one-line change)
 

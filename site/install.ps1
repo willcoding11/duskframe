@@ -12,10 +12,10 @@ param(
 $ErrorActionPreference = 'Stop'
 
 # ---- brand config (single place; site/sync-installers.py rewrites these from branding/brand.env) ----
-$BrandName = 'Wrenlight'    # @brand
-$Slug      = 'wrenlight'    # @brand
+$BrandName = 'Duskframe'    # @brand
+$Slug      = 'duskframe'    # @brand
 $GhUser    = 'willcoding11' # @brand
-$GhRepo    = 'wrenlight'    # @brand
+$GhRepo    = 'duskframe'    # @brand
 # -----------------------------------------------------------------------------------------------------
 
 if (-not $BaseUrl)    { $BaseUrl = "https://github.com/$GhUser/$GhRepo/releases/latest/download" }

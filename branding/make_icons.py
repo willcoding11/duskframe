@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Generate the original app logo and every derived asset (needs Pillow only).
 
-The logo (a small wren in front of a rising sun, flat colours) is defined once
+The logo (a setting sun in viewfinder brackets, flat colours) is defined once
 as a list of vector primitives below; the same list is written to SVG and
 rasterised with Pillow, so no SVG renderer is required.
 
@@ -32,26 +32,19 @@ BRANCH = "#8A6A45"
 # ---- the logo, 512x512 canvas -------------------------------------------
 # last tuple item = min_px: shape is hidden when rendered smaller than that
 def logo_shapes():
-    s = [("rrect", 0, 0, 512, 512, 112, NAVY, 0),
-         ("circle", 256, 250, 134, SUN, 0)]
-    for k in range(12):  # rays
-        a = math.radians(k * 30 + 15)
-        r1, r2 = 160, 196
-        s.append(("line", 256 + r1 * math.cos(a), 250 + r1 * math.sin(a),
-                  256 + r2 * math.cos(a), 250 + r2 * math.sin(a), 15, SUN, 48))
-    s += [
-        # tail (cocked up, the wren's signature), body, head, wing
-        ("poly", [(318, 296), (350, 214), (372, 176), (394, 168), (384, 232), (366, 326)], 7, CREAM, 0),
-        ("ellipse", 262, 296, 92, 64, -14, CREAM, 0),
-        ("circle", 196, 246, 47, CREAM, 0),
-        ("ellipse", 272, 298, 56, 28, -20, TAN, 0),
-        ("poly", [(152, 234), (104, 248), (152, 256)], 3, "#D9822B", 0),  # beak
-        ("circle", 188, 237, 8, NAVY, 0),  # eye
-        # legs and perch
-        ("line", 252, 346, 248, 396, 9, TAN, 0),
-        ("line", 286, 346, 292, 396, 9, TAN, 0),
-        ("line", 168, 404, 384, 404, 15, BRANCH, 0),
-    ]
+    # Duskframe: a setting sun on the horizon inside viewfinder corner brackets
+    def box(x1, y1, x2, y2, c, m=0):
+        return ("poly", [(x1, y1), (x2, y1), (x2, y2), (x1, y2)], 0, c, m)
+    s = [("rrect", 0, 0, 512, 512, 112, "#2A1F4A", 0),
+         box(0, 150, 512, 300, "#4B2F6B"), box(0, 300, 512, 340, "#8A3F6E"),
+         ("circle", 256, 330, 120, "#FF9A3C", 0),
+         box(0, 330, 512, 512, "#1B1530"),
+         box(90, 352, 422, 366, "#FF9A3C", 48), box(130, 384, 382, 394, "#C8567A", 48),
+         box(170, 410, 342, 418, "#8A3F6E", 48)]
+    L, T, B, W = 78, 78, 434, 22   # viewfinder corners
+    for (cx, cy, dx, dy) in [(L, T, 1, 1), (B, T, -1, 1), (L, B, 1, -1), (B, B, -1, -1)]:
+        s.append(("line", cx, cy, cx + dx * 70, cy, W, "#FFE9C9", 0))
+        s.append(("line", cx, cy, cx, cy + dy * 70, W, "#FFE9C9", 0))
     return s
 
 

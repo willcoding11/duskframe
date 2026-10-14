@@ -1,26 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-<title>Wrenlight logo</title>
-<rect x="0" y="0" width="512" height="512" rx="112" fill="#1B2336"/>
-<circle cx="256" cy="250" r="134" fill="#F7B538"/>
-<line x1="410.5" y1="291.4" x2="445.3" y2="300.7" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="369.1" y1="363.1" x2="394.6" y2="388.6" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="297.4" y1="404.5" x2="306.7" y2="439.3" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="214.6" y1="404.5" x2="205.3" y2="439.3" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="142.9" y1="363.1" x2="117.4" y2="388.6" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="101.5" y1="291.4" x2="66.7" y2="300.7" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="101.5" y1="208.6" x2="66.7" y2="199.3" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="142.9" y1="136.9" x2="117.4" y2="111.4" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="214.6" y1="95.5" x2="205.3" y2="60.7" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="297.4" y1="95.5" x2="306.7" y2="60.7" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="369.1" y1="136.9" x2="394.6" y2="111.4" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<line x1="410.5" y1="208.6" x2="445.3" y2="199.3" stroke="#F7B538" stroke-width="15" stroke-linecap="round"/>
-<polygon points="318,296 350,214 372,176 394,168 384,232 366,326" fill="#FFF4DC" stroke="#FFF4DC" stroke-width="14" stroke-linejoin="round"/>
-<ellipse cx="262" cy="296" rx="92" ry="64" transform="rotate(-14 262 296)" fill="#FFF4DC"/>
-<circle cx="196" cy="246" r="47" fill="#FFF4DC"/>
-<ellipse cx="272" cy="298" rx="56" ry="28" transform="rotate(-20 272 298)" fill="#E3B873"/>
-<polygon points="152,234 104,248 152,256" fill="#D9822B" stroke="#D9822B" stroke-width="6" stroke-linejoin="round"/>
-<circle cx="188" cy="237" r="8" fill="#1B2336"/>
-<line x1="252.0" y1="346.0" x2="248.0" y2="396.0" stroke="#E3B873" stroke-width="9" stroke-linecap="round"/>
-<line x1="286.0" y1="346.0" x2="292.0" y2="396.0" stroke="#E3B873" stroke-width="9" stroke-linecap="round"/>
-<line x1="168.0" y1="404.0" x2="384.0" y2="404.0" stroke="#8A6A45" stroke-width="15" stroke-linecap="round"/>
+<title>Duskframe logo</title>
+<rect x="0" y="0" width="512" height="512" rx="112" fill="#2A1F4A"/>
+<polygon points="0,150 512,150 512,300 0,300" fill="#4B2F6B" stroke="#4B2F6B" stroke-width="0" stroke-linejoin="round"/>
+<polygon points="0,300 512,300 512,340 0,340" fill="#8A3F6E" stroke="#8A3F6E" stroke-width="0" stroke-linejoin="round"/>
+<circle cx="256" cy="330" r="120" fill="#FF9A3C"/>
+<polygon points="0,330 512,330 512,512 0,512" fill="#1B1530" stroke="#1B1530" stroke-width="0" stroke-linejoin="round"/>
+<polygon points="90,352 422,352 422,366 90,366" fill="#FF9A3C" stroke="#FF9A3C" stroke-width="0" stroke-linejoin="round"/>
+<polygon points="130,384 382,384 382,394 130,394" fill="#C8567A" stroke="#C8567A" stroke-width="0" stroke-linejoin="round"/>
+<polygon points="170,410 342,410 342,418 170,418" fill="#8A3F6E" stroke="#8A3F6E" stroke-width="0" stroke-linejoin="round"/>
+<line x1="78.0" y1="78.0" x2="148.0" y2="78.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="78.0" y1="78.0" x2="78.0" y2="148.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="434.0" y1="78.0" x2="364.0" y2="78.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="434.0" y1="78.0" x2="434.0" y2="148.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="78.0" y1="434.0" x2="148.0" y2="434.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="78.0" y1="434.0" x2="78.0" y2="364.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="434.0" y1="434.0" x2="364.0" y2="434.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
+<line x1="434.0" y1="434.0" x2="434.0" y2="364.0" stroke="#FFE9C9" stroke-width="22" stroke-linecap="round"/>
 </svg>

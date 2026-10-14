@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright (C) 2009-2025 darktable developers (and Wrenlight contributors).
+<!-- Copyright (C) 2009-2025 darktable developers (and Duskframe contributors).
 -->
 <component type="desktop">
-  <id>org.wrenlight.Wrenlight</id>
-  <name>Wrenlight</name>
-  <launchable type="desktop-id">org.wrenlight.Wrenlight.desktop</launchable>
+  <id>org.duskframe.Duskframe</id>
+  <name>Duskframe</name>
+  <launchable type="desktop-id">org.duskframe.Duskframe.desktop</launchable>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0+</project_license>
   <_summary>Organize and develop images from digital cameras</_summary>
   <translation type="gettext">darktable</translation>
   <description>
     <_p>
-      Wrenlight, a fork of darktable, manages your camera raw files and images in a database, lets you
+      Duskframe, a fork of darktable, manages your camera raw files and images in a database, lets you
       view them through lighttable mode and develop/enhance them in darkroom mode.
     </_p>
     <_p>
@@ -19,7 +19,7 @@
       tethering, print and a slideshow.
     </_p>
     <_p>
-      Wrenlight supports most modern cameras' raw formats, and does all
+      Duskframe supports most modern cameras' raw formats, and does all
       of its processing at very high precision.
     </_p>
   </description>
@@ -60,10 +60,10 @@
     <release date="2019-03-07" version="2.6.1"/>
     <release date="2018-12-24" version="2.6.0"/>
   </releases>
-  <developer id="org.wrenlight">
-    <name>Wrenlight contributors and darktable developers</name>
+  <developer id="org.duskframe">
+    <name>Duskframe contributors and darktable developers</name>
   </developer>
-  <url type="homepage">https://willcoding11.github.io/wrenlight</url>
-  <url type="bugtracker">https://github.com/willcoding11/wrenlight/issues</url>
+  <url type="homepage">https://willcoding11.github.io/duskframe</url>
+  <url type="bugtracker">https://github.com/willcoding11/duskframe/issues</url>
   <url type="help">https://www.darktable.org/resources/</url>
 </component>

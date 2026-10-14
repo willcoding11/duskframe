@@ -4,10 +4,10 @@
 set -euo pipefail
 
 # ---- brand config (single place; site/sync-installers.py rewrites these from branding/brand.env) ----
-BRAND_NAME="Wrenlight"      # @brand
-BRAND_SLUG="wrenlight"      # @brand
+BRAND_NAME="Duskframe"      # @brand
+BRAND_SLUG="duskframe"      # @brand
 GH_USER="willcoding11"      # @brand
-GH_REPO="wrenlight"         # @brand
+GH_REPO="duskframe"         # @brand
 # -----------------------------------------------------------------------------------------------------
 
 BASE_URL="${BASE_URL:-https://github.com/$GH_USER/$GH_REPO/releases/latest/download}"

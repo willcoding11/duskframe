@@ -1,22 +1,22 @@
-<p align="center"><img src="branding/logo.svg" alt="Wrenlight logo" width="128"></p>
+<p align="center"><img src="branding/logo.svg" alt="Duskframe logo" width="128"></p>
 
-# Wrenlight
+# Duskframe
 
-**Wrenlight** is a free, open-source photo editor and non-destructive raw developer. It is a fork of [darktable](https://www.darktable.org/): it keeps darktable's editing engine and changes the look, defaults and branding so it feels cleaner and more familiar to photographers coming from other editors.
+**Duskframe** is a free, open-source photo editor and non-destructive raw developer. It is a fork of [darktable](https://www.darktable.org/): it keeps darktable's editing engine and changes the look, defaults and branding so it feels cleaner and more familiar to photographers coming from other editors.
 
-> **Based on darktable.** Wrenlight is built on the work of the darktable developers (see [AUTHORS](AUTHORS)) and is not affiliated with or endorsed by the darktable project. darktable is (c) 2009-2026 the darktable developers.
-> Wrenlight is licensed under the **GNU General Public License v3.0 or later**, the same license as darktable; see [LICENSE](LICENSE). All upstream copyright notices are kept.
-> Wrenlight is not affiliated with Adobe. "Lightroom" is a trademark of Adobe Inc.
+> **Based on darktable.** Duskframe is built on the work of the darktable developers (see [AUTHORS](AUTHORS)) and is not affiliated with or endorsed by the darktable project. darktable is (c) 2009-2026 the darktable developers.
+> Duskframe is licensed under the **GNU General Public License v3.0 or later**, the same license as darktable; see [LICENSE](LICENSE). All upstream copyright notices are kept.
+> Duskframe is not affiliated with Adobe. "Lightroom" is a trademark of Adobe Inc.
 
-- Project site: <https://willcoding11.github.io/wrenlight>
-- Source and issues: <https://github.com/willcoding11/wrenlight>
+- Project site: <https://willcoding11.github.io/duskframe>
+- Source and issues: <https://github.com/willcoding11/duskframe>
 - Upstream project: <https://github.com/darktable-org/darktable>
 
 ## What is different from darktable
 
 - New name, logo, splash screen and About dialog (the name is defined once, in [`branding/brand.env`](branding/brand.env); run `sh branding/apply-brand.sh` after editing it).
-- A separate per-user config, cache and AI-model folder named after the app (for example `~/.config/wrenlight`), so Wrenlight and darktable can be installed side by side without sharing settings or the library database.
-- Wrenlight keeps darktable's internal executable names (`darktable`, `darktable-cli`, ...) to stay merge-friendly with upstream.
+- A separate per-user config, cache and AI-model folder named after the app (for example `~/.config/duskframe`), so Duskframe and darktable can be installed side by side without sharing settings or the library database.
+- Duskframe keeps darktable's internal executable names (`darktable`, `darktable-cli`, ...) to stay merge-friendly with upstream.
 - Theme, module grouping, presets and shortcuts are tuned separately (see the other tracks of this fork).
 
 The rest of this file is darktable's upstream README, kept for the build and usage instructions that still apply unchanged.

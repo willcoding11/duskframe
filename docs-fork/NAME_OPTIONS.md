@@ -1,5 +1,7 @@
 # Name options for the darktable fork
 
+> **DECISION (2026-10-13): the user chose "Duskframe".** Brand is set in `darktable-fork/branding/brand.env`.
+
 Date: 2026-10-13. **This is not legal advice.** It is a quick, free, desk-level screen using web search (standard mode) plus an unauthenticated GitHub profile check. It did NOT query USPTO/EUIPO/WIPO databases directly, did not check domain registrars reliably, and nothing was registered. Before public launch, run a proper search (USPTO TESS/Trademark Search, EUIPO TMview, WIPO Global Brand Database) or ask a trademark attorney.
 
 Constraints applied: not "darktable"; nothing resembling Lightroom / Adobe / Lumina-/Luminar-style names.
@@ -10,7 +12,7 @@ GitHub column: HTTP status of `github.com/<name>` (404 = no user/org with that h
 
 | # | Name | Why it fits | Conflicts found (search) | Risk | GitHub handle |
 |---|------|-------------|--------------------------|------|---------------|
-| 0 | **Wrenlight** (current placeholder) | Small bird + light; friendly, calm, easy to say; clearly not Lightroom | No product, repo or app-store hit for "Wrenlight photo editor" in search ([results](https://www.lenovo.com/au/en/knowledgebase/comprehensive-guide-to-computer-photo-editing-software/) were unrelated). Ends in "-light" like many photo tools, but not confusable with Lightroom | **Low** | 404 (free) |
+| 0 | **Duskframe** (current placeholder) | Small bird + light; friendly, calm, easy to say; clearly not Lightroom | No product, repo or app-store hit for "Duskframe photo editor" in search ([results](https://www.lenovo.com/au/en/knowledgebase/comprehensive-guide-to-computer-photo-editing-software/) were unrelated). Ends in "-light" like many photo tools, but not confusable with Lightroom | **Low** | 404 (free) |
 | 1 | **Aperline** | Aperture + line; photographic, short | No product or repo found for "Aperline" in photo/GitHub search. Looks like "Aperture" (Apple's discontinued app) only loosely | Low | 200 (taken, unrelated per search) |
 | 2 | **Halation** | Film term for highlight glow; evocative | Name is a generic effect word used by many tools: [VSCO Halation](https://www.vsco.co/features/halation), [Halationify](https://mwm.ai/apps/halationify-analog-photos/6739345616), [FilmConvert Halation](https://www.filmconvert.com/plugin/halation), [Colourtone](https://apps.apple.com/us/app/-/id1383338239). Hard to trademark, hard to search for | **High** | 200 (taken) |
 | 3 | **Emulsa** | From "emulsion" (film); short | No exact match, but crowded neighbours: [Emulsion (Mac photo library)](https://www.mactech.com/2015/06/02/emulsion-is-new-photo-library-app-for-mac-os-x/), [Emulsify](https://apps.apple.com/cn/app/id1408272207), Emulsio | Med | 404 (free) |
@@ -22,7 +24,7 @@ GitHub column: HTTP status of `github.com/<name>` (404 = no user/org with that h
 
 ## Recommendation (top 3)
 
-1. **Wrenlight** - lowest conflict signal, handle free, already the codename so renaming costs nothing. Keep it unless the team dislikes it.
+1. **Duskframe** - lowest conflict signal, handle free, already the codename so renaming costs nothing. Keep it unless the team dislikes it.
 2. **Oakgrain** - no conflicts found, handle free, distinctive; slightly less "light/photo" feeling.
 3. **Duskframe** (runner-up: Aperline) - no conflicts found, descriptive of photography. GitHub handle is taken (use e.g. `duskframe-app` or an org name).
 
@@ -32,4 +34,4 @@ Next steps before committing: verify domains (.com/.org/.app) at a registrar, ch
 
 ## How to rename
 
-The codename lives only in `darktable-fork/branding/brand.env`. Edit the name value(s) there (e.g. the Wrenlight entry) and rebuild/re-apply branding as the project's branding script does. Nothing else should hard-code the name.
+The codename lives only in `darktable-fork/branding/brand.env`. Edit the name value(s) there (e.g. the Duskframe entry) and rebuild/re-apply branding as the project's branding script does. Nothing else should hard-code the name.
