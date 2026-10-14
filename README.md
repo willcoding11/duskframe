@@ -1,3 +1,5 @@
+> **Duskframe v0.1.0** (early release): download from [Releases](https://github.com/willcoding11/duskframe/releases/latest) or the [site](https://willcoding11.github.io/duskframe/). Windows, Apple Silicon macOS and Linux x86_64 builds; Intel Mac build is coming soon. Unsigned builds. Based on darktable 5.6.2 (GPL-3.0).
+
 <p align="center"><img src="branding/logo.svg" alt="Duskframe logo" width="128"></p>
 
 # Duskframe

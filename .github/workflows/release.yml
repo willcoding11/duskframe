@@ -462,7 +462,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ needs.meta.outputs.name }} ${{ github.ref_name }}
-          prerelease: true
+          prerelease: false  # "latest" URLs ignore prereleases; state maturity in RELEASE_NOTES.md
           body_path: RELEASE_NOTES.md
           generate_release_notes: false
           fail_on_unmatched_files: true
