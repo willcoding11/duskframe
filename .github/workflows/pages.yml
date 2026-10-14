@@ -3,13 +3,6 @@ name: Pages
 # Publishes the static download site from site/ (GitHub Pages source must be "GitHub Actions").
 
 on:
-  push:
-    branches:
-      - lr-fork
-      - main
-    paths:
-      - 'site/**'
-      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
