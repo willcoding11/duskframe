@@ -20,6 +20,8 @@ pkg_check_modules(RSVG2 REQUIRED librsvg-2.0)
 pkg_check_modules(LCMS2 REQUIRED lcms2)
 
 # Include current directory for header
+# brand slug for per-user model dir (see branding/brand.env)
+target_compile_definitions(darktable_ai PRIVATE PACKAGE_SLUG="${DT_BRAND_SLUG}")
 target_include_directories(darktable_ai PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../>

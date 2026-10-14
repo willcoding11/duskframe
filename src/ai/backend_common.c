@@ -16,7 +16,6 @@
     along with darktable.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "config.h"
 #include "backend.h"
 #include "common/darktable.h"
 #include "common/file_location.h"
