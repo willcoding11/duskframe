@@ -31,16 +31,13 @@ void darktable_show_about_dialog()
 #endif
   gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(dialog), PACKAGE_NAME);
   gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), darktable_package_version);
-  char *copyright = g_strdup_printf(_("copyright (c) the darktable authors 2009-%s
-"
+  char *copyright = g_strdup_printf(_("copyright (c) the darktable authors 2009-%s\n"
                                       "and the %s contributors"),
                                     darktable_last_commit_year, PACKAGE_NAME);
   gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(dialog), copyright);
   g_free(copyright);
   gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog),
-                                _("organize and develop images from digital cameras
-
-"
+                                _("organize and develop images from digital cameras\n\n"
                                   "based on darktable, a free software project licensed under GPL-3.0"));
   gtk_about_dialog_set_license_type(GTK_ABOUT_DIALOG(dialog), GTK_LICENSE_GPL_3_0);
   gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(dialog), PACKAGE_BRAND_SITE);
