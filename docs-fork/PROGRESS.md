@@ -12,3 +12,5 @@ Tools: gh authed willcoding11; no shellcheck/actionlint (try pip/npm); MSYS2 exi
 - CI: dispatching .github/workflows/release.yml with `gh workflow run release.yml -R willcoding11/duskframe --ref lr-fork`; iterate with gh run view --log-failed.
 - CI run 38500401385 (workflow_dispatch): Windows, macOS arm64, Linux AppImage GREEN; artifacts in artifacts/ (sizes: AppImage 178MB, dmg 88MB, setup.exe 139MB, portable.zip 223MB). Windows portable darktable-cli --version OK; GUI launched, window title "Duskframe". macOS Intel job very slow (brew source builds on Intel runner), still running at 03:17Z.
 - Fixes needed earlier: unterminated string in about.c, PACKAGE_SLUG in ai lib (now compile definition).
+- 03:48Z: macOS Intel job (run 38500401385) still in "Install base dependencies" after ~1.5h (suspected: Homebrew Intel Tier 3 => formulae built from source). Left running (6h job limit). If it times out: options = cache brew, drop graphicsmagick rebuild, or ship Intel build later. Resume: `gh run view 38500401385 -R willcoding11/duskframe`, then `gh run download`.
+- Pending user OK: enable Pages, publish first Release (tag v0.1.0).
