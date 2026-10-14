@@ -146,10 +146,10 @@ void gui_init(dt_lib_module_t *self)
                           N_("color label"), button, &dt_action_def_color_label);
   }
 
-  dt_shortcut_register(ac, 1, 0, GDK_KEY_F1, 0);
-  dt_shortcut_register(ac, 2, 0, GDK_KEY_F2, 0);
-  dt_shortcut_register(ac, 3, 0, GDK_KEY_F3, 0);
-  dt_shortcut_register(ac, 4, 0, GDK_KEY_F4, 0);
+  dt_shortcut_register(ac, 1, 0, GDK_KEY_6, 0); // fork: 6-9 = red/yellow/green/blue
+  dt_shortcut_register(ac, 2, 0, GDK_KEY_7, 0);
+  dt_shortcut_register(ac, 3, 0, GDK_KEY_8, 0);
+  dt_shortcut_register(ac, 4, 0, GDK_KEY_9, 0);
   dt_shortcut_register(ac, 5, 0, GDK_KEY_F5, 0);
 
   gtk_widget_set_name(self->widget, "lib-label-colors");

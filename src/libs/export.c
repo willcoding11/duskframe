@@ -1681,7 +1681,7 @@ void gui_init(dt_lib_module_t *self)
                                 (self, NC_("actionbutton", "start export"),
                                  _export_button_clicked, self,
                                  NULL,
-                                 GDK_KEY_e, GDK_CONTROL_MASK));
+                                 GDK_KEY_e, GDK_CONTROL_MASK | GDK_SHIFT_MASK)); // fork
 
   self->widget = dt_gui_vbox
     (dt_ui_section_label_new(C_("section", "storage options")),

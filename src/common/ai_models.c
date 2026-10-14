@@ -382,7 +382,7 @@ static gboolean _setup_registry(dt_ai_registry_t *registry)
   char *models = dt_ai_resolve_models_path_override();
   if(!models)
     models = g_build_filename(g_get_user_data_dir(),
-                              "darktable", "models", NULL);
+                              PACKAGE_SLUG, "models", NULL);
   char *cache = g_build_filename(cachedir, "ai_downloads", NULL);
 
   // attempt both before bailing so the log reports every missing dir

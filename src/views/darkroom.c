@@ -3381,7 +3381,7 @@ void gui_init(dt_view_t *self)
 
   // Zoom shortcuts
   dt_action_register(DT_ACTION(self), N_("zoom close-up"), zoom_key_accel,
-                     GDK_KEY_1, GDK_MOD1_MASK);
+                     GDK_KEY_z, 0); // fork: Z = zoom 100%
 
   // zoom in/out
   dt_action_register(DT_ACTION(self), N_("zoom in"), zoom_in_callback,
@@ -4986,7 +4986,7 @@ static void _darkroom_display_second_window(dt_develop_t *dev)
     _second_window_configure_ppd_dpi(dev);
 
     gtk_window_set_icon_name(GTK_WINDOW(dev->second_wnd), "darktable");
-    gtk_window_set_title(GTK_WINDOW(dev->second_wnd), _("darktable - darkroom preview"));
+    gtk_window_set_title(GTK_WINDOW(dev->second_wnd), _(PACKAGE_NAME " - darkroom preview"));
 
 #ifndef GDK_WINDOWING_QUARTZ
     // On macOS, transient_for is implemented via [NSWindow addChildWindow:ordered:],

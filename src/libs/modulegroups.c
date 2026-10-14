@@ -39,8 +39,10 @@
 DT_MODULE(1)
 
 // the T_ macros are for the translation engine to take them into account
-#define FALLBACK_PRESET_NAME     "workflow: scene-referred"
-#define T_FALLBACK_PRESET_NAME _("workflow: scene-referred")
+// fork: Lightroom-style groups are the default layout
+#define LR_PRESET_NAME     "workflow: basic, tone curve, color, detail, optics, effects"
+#define FALLBACK_PRESET_NAME     LR_PRESET_NAME
+#define T_FALLBACK_PRESET_NAME _(LR_PRESET_NAME)
 
 #define DEPRECATED_PRESET_NAME     "modules: deprecated"
 #define T_DEPRECATED_PRESET_NAME _("modules: deprecated")
@@ -1797,6 +1799,79 @@ void init_presets(dt_lib_module_t *self)
   dt_lib_presets_add(_("workflow: scene-referred"),
                      self->plugin_name, self->version(), tx, strlen(tx), TRUE, 0);
 
+  // fork: Lightroom-style groups (default layout)
+
+  SQA(TRUE);
+
+  SMG(C_("modulegroup", "Basic"), "basic");
+  AM("exposure");
+  AM("temperature");
+  AM("colorbalancergb");
+  AM("highlights");
+  AM("shadhi");
+  AM("crop");
+  AM("flip");
+  AM("ashift");
+
+  SMG(C_("modulegroup", "Tone Curve"), "tone");
+  AM("rgbcurve");
+  AM("tonecurve");
+  AM("toneequal");
+  if(wf_filmic || wf_none)
+    AM("filmicrgb");
+  if(wf_sigmoid || wf_none)
+    AM("sigmoid");
+  if(wf_agx || wf_none)
+    AM("agx");
+  AM("basecurve");
+  AM("rgblevels");
+
+  SMG(C_("modulegroup", "Color"), "color");
+  AM("colorbalancergb");
+  AM("colorzones");
+  AM("colorequal");
+  AM("colorcorrection");
+  AM("velvia");
+  AM("channelmixerrgb");
+  AM("colorize");
+  AM("splittoning");
+  AM("monochrome");
+
+  SMG(C_("modulegroup", "Detail"), "correct");
+  AM("sharpen");
+  AM("diffuse");
+  AM("denoiseprofile");
+  AM("nlmeans");
+  AM("bilat");
+  AM("atrous");
+  AM("blurs");
+
+  SMG(C_("modulegroup", "Optics"), "technical");
+  AM("lens");
+  AM("ashift");
+  AM("cacorrect");
+  AM("cacorrectrgb");
+  AM("hazeremoval");
+  AM("liquify");
+  AM("retouch");
+  AM("hotpixels");
+
+  SMG(C_("modulegroup", "Effects"), "effect");
+  AM("vignette");
+  AM("grain");
+  AM("borders");
+  AM("enlargecanvas");
+  AM("watermark");
+  AM("bloom");
+  AM("soften");
+  AM("lowpass");
+  AM("graduatednd");
+  AM("overlay");
+  AM("censorize");
+
+  dt_lib_presets_add(_(LR_PRESET_NAME),
+                     self->plugin_name, self->version(), tx, strlen(tx), TRUE, 0);
+
   // search only (only active modules visible)
   SNQA();
   dt_lib_presets_add(_("search only"),
@@ -1830,7 +1905,7 @@ void init_presets(dt_lib_module_t *self)
     tx = _preset_retrieve_old_layout(NULL, NULL);
     dt_lib_presets_add(_("previous config"),
                        self->plugin_name, self->version(), tx, strlen(tx), FALSE, 0);
-    dt_conf_set_string("plugins/darkroom/modulegroups_preset", _("previous layout"));
+    dt_conf_set_string("plugins/darkroom/modulegroups_preset", _(LR_PRESET_NAME));
     g_free(tx);
 
     tx = _preset_retrieve_old_layout_updated();
