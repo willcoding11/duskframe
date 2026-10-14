@@ -1,0 +1,250 @@
+/*
+    This file is part of darktable.
+    Copyright (C) 2026 darktable developers and fork contributors.
+
+    darktable is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    darktable is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with darktable.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* neutral-dark: flat, neutral dark-grey theme with a single muted blue accent.
+   Structure follows darktable-elegant-*.css (import base + override named colors,
+   then a few widget rules). GTK 3.24 CSS only. */
+
+@import url("darktable.css");
+@import url("chunk-fonts.css");
+
+/* ---- palette ---- */
+@define-color nd_bg_deep    #1e1e1e;   /* center/background areas, graphs */
+@define-color nd_bg_panel   #2b2b2b;   /* side panels */
+@define-color nd_bg_module  #323232;   /* module bodies / raised surfaces */
+@define-color nd_bg_header  #383838;   /* module headers, buttons */
+@define-color nd_bg_hover   #444444;
+@define-color nd_border     #3d3d3d;
+@define-color nd_text       #b8b8b8;
+@define-color nd_text_head  #d6d6d6;
+@define-color nd_text_dim   #7d7d7d;
+@define-color nd_accent     #4a9eff;
+@define-color nd_accent_dim #3a78c2;
+
+/* General */
+@define-color selected_bg_color @nd_accent_dim;
+@define-color border_color @nd_border;
+@define-color bg_color @nd_bg_panel;
+@define-color fg_color @nd_text;
+@define-color text_color @nd_bg_deep;
+@define-color placeholder_text_color @nd_text_dim;
+@define-color disabled_fg_color #5c5c5c;
+
+/* Scroll bars */
+@define-color scroll_bar_inactive #4a4a4a;
+@define-color scroll_bar_active #6a6a6a;
+@define-color scroll_bar_bg @nd_bg_panel;
+
+/* Modules box */
+@define-color plugin_bg_color @nd_bg_module;
+@define-color section_label @nd_text_head;
+@define-color plugin_label_color @nd_text_head;
+@define-color collapsible_bg_color @nd_bg_header;
+
+/* Sliders and comboboxes: flat, accent fill */
+@define-color bauhaus_bg #262626;
+@define-color bauhaus_fill @nd_accent_dim;
+@define-color bauhaus_fg @nd_text;
+@define-color bauhaus_border @nd_bg_module;
+@define-color bauhaus_indicator_border @nd_bg_module;
+@define-color bauhaus_bg_hover #2e2e2e;
+@define-color bauhaus_fg_hover @nd_text_head;
+@define-color bauhaus_fg_selected @nd_accent;
+@define-color bauhaus_fg_insensitive alpha(@nd_text, 0.4);
+
+/* Buttons and tabs */
+@define-color button_bg @nd_bg_header;
+@define-color button_fg alpha(@nd_text, 0.8);
+@define-color button_border @nd_border;
+@define-color button_hover_bg @nd_bg_hover;
+@define-color button_hover_fg @nd_text_head;
+
+/* Text fields */
+@define-color field_bg #262626;
+@define-color field_fg @nd_text;
+@define-color field_active_bg #2e2e2e;
+@define-color field_active_fg @nd_text_head;
+@define-color field_selected_bg @nd_accent_dim;
+@define-color field_selected_fg #ffffff;
+@define-color field_hover_bg @nd_bg_hover;
+@define-color field_hover_fg @nd_text_head;
+
+/* Tooltips */
+@define-color tooltip_bg_color #1a1a1a;
+@define-color tooltip_fg_color @nd_text_head;
+@define-color log_fg_color @nd_text_head;
+
+/* Views */
+@define-color darkroom_bg_color #1e1e1e;
+@define-color lighttable_bg_color #1e1e1e;
+@define-color lighttable_bg_font_color @nd_text;
+
+/* Lighttable and filmstrip */
+@define-color thumbnail_font_color #d0d0d0;
+@define-color thumbnail_bg_color #2b2b2b;
+@define-color thumbnail_fg_color #8a8a8a;
+@define-color thumbnail_selected_bg_color #3a3a3a;
+@define-color thumbnail_hover_bg_color #333333;
+@define-color thumbnail_hover_fg_color #e0e0e0;
+@define-color thumbnail_localcopy_color #e0e0e0;
+
+@define-color filmstrip_bg_color @nd_bg_panel;
+@define-color range_bg_color alpha(@nd_text, 0.08);
+
+/* Graphs */
+@define-color graph_bg #1e1e1e;
+@define-color graph_border #3d3d3d;
+@define-color graph_fg #d6d6d6;
+@define-color graph_grid #343434;
+@define-color inset_histogram alpha(#d6d6d6, 0.5);
+
+/* ---- widget rules ---- */
+
+/* Module header: small, letter-spaced title, thin separator, generous spacing */
+#module-header
+{
+  background-color: @nd_bg_header;
+  border: none;
+  border-bottom: 1px solid @nd_border;
+  padding: 0.55em 0.6em;
+}
+
+#iop-expander.dt_module_active #module-header
+{
+  border-left: 2px solid @nd_accent;
+}
+
+#iop-expander.dt_module_focus #module-header
+{
+  background-color: shade(@nd_bg_header, 1.12);
+}
+
+#iop-module-name,
+#lib-module-name
+{
+  font-size: 0.86em;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: @nd_text_head;
+  background-color: transparent;
+}
+
+/* Section labels in panels */
+#iop-panel-label,
+#lib-panel-label
+{
+  color: @nd_text_head;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+  padding: 0.3em 0.2em 0.3em 0.6em;
+}
+
+/* Collapse affordance: section expanders get a clear, indented header */
+.dt_section_expander,
+.dt_section_expander label
+{
+  background-color: @nd_bg_header;
+  color: @nd_text_head;
+  border: none;
+  border-bottom: 1px solid @nd_border;
+  margin-top: 0.2em;
+}
+
+.dt_section_expander:hover,
+.dt_section_expander:hover label
+{
+  background-color: @nd_bg_hover;
+  color: @nd_accent;
+}
+
+/* Flat buttons with subtle border */
+.dt_module_btn,
+button
+{
+  background-image: none;
+  background-color: @nd_bg_header;
+  border: 1px solid @nd_border;
+  border-radius: 3px;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.dt_module_btn:hover,
+button:hover
+{
+  background-color: @nd_bg_hover;
+  color: @nd_text_head;
+}
+
+.dt_module_btn:checked,
+togglebutton:checked
+{
+  background-color: @nd_bg_hover;
+  color: @nd_accent;
+  border-color: @nd_accent_dim;
+}
+
+/* Flat inputs */
+entry
+{
+  background-image: none;
+  border: 1px solid @nd_border;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+entry:focus
+{
+  border-color: @nd_accent_dim;
+}
+
+/* Thin flat scrollbars */
+scrollbar slider
+{
+  border-radius: 3px;
+  min-width: 6px;
+  min-height: 6px;
+}
+
+/* Tooltips */
+tooltip
+{
+  border: 1px solid @nd_border;
+  border-radius: 3px;
+}
+
+/* Dark overlay on thumbnail hover (colors match @thumbnail_hover_bg_color) */
+.dt_overlays_hover_extended #thumb-main:hover #thumb-bottom,
+.dt_overlays_mixed #thumb-main:hover #thumb-bottom,
+.dt_overlays_hover #thumb-main:hover #thumb-bottom
+{
+  background-image: linear-gradient(rgba(51, 51, 51, 0.8) 0%, rgba(51, 51, 51, 0.8) 90%, rgba(51, 51, 51, 0) 100%);
+}
+
+.dt_overlays_always#culling #thumb-bottom,
+.dt_overlays_always_extended#culling #thumb-bottom,
+.dt_overlays_always#preview #thumb-bottom,
+.dt_overlays_always_extended#preview #thumb-bottom
+{
+  background-color: shade(@lighttable_bg_color, 1.2);
+}
+
+.dt_duplicate_ui entry
+{
+  margin: 1em 0 1em 0.5em;
+}

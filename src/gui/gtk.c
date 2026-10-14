@@ -191,8 +191,8 @@ static void _fullscreen_key_accel_callback(dt_action_t *action)
   // workaround for GTK Quartz backend bug
   gtk_window_set_title(GTK_WINDOW(widget),
                        widget == dt_ui_main_window(darktable.gui->ui)
-                       ? "darktable"
-                       : _("darktable - darkroom preview"));
+                       ? PACKAGE_NAME
+                       : _(PACKAGE_NAME " - darkroom preview"));
 #endif
 }
 
@@ -1570,11 +1570,11 @@ int dt_gui_gtk_init(dt_gui_gtk_t *gui)
   g_signal_connect(G_OBJECT(help_manual), "activate",
                    G_CALLBACK(dt_gui_show_help), help_manual);
 
-  GtkWidget *help_home = gtk_menu_item_new_with_label(C_("menu", "darktable Homepage"));
+  GtkWidget *help_home = gtk_menu_item_new_with_label(C_("menu", PACKAGE_NAME " Homepage"));
   gtk_menu_shell_append(GTK_MENU_SHELL(help_menu), help_home);
   gtk_widget_show(help_home);
   g_signal_connect(G_OBJECT(help_home), "activate",
-                   G_CALLBACK(_open_url), "https://www.darktable.org");
+                   G_CALLBACK(_open_url), PACKAGE_BRAND_SITE);
 
   gtk_menu_item_set_submenu(GTK_MENU_ITEM(help_root_menu), help_menu);
 
@@ -1718,7 +1718,7 @@ int dt_gui_gtk_init(dt_gui_gtk_t *gui)
 
   // Full-screen accelerator (no ESC handler here to enable quit-slideshow using ESC)
   dt_action_register(&darktable.control->actions_global, N_("fullscreen"),
-                     _fullscreen_key_accel_callback, GDK_KEY_F11, 0);
+                     _fullscreen_key_accel_callback, GDK_KEY_f, 0); // fork: F = fullscreen
 
   // Side-border hide/show
   dt_action_register(pnl, N_("all"), _toggle_side_borders_accel_callback, GDK_KEY_Tab, 0);
@@ -1944,7 +1944,7 @@ static void _init_widgets(dt_gui_gtk_t *gui)
     // titlebar which allows for hiding that titlebar in maximized
     // windows when using an extensions such as Unite
     GtkWidget *header_bar = gtk_header_bar_new();
-    gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), "darktable");
+    gtk_header_bar_set_title(GTK_HEADER_BAR(header_bar), PACKAGE_NAME);
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header_bar), TRUE);
     gtk_window_set_titlebar(GTK_WINDOW(widget), header_bar);
     gtk_widget_show(header_bar);
@@ -1958,7 +1958,7 @@ static void _init_widgets(dt_gui_gtk_t *gui)
   gtk_window_set_type_hint(GTK_WINDOW(widget), GDK_WINDOW_TYPE_HINT_NORMAL);
 
   gtk_window_set_icon_name(GTK_WINDOW(widget), "darktable");
-  gtk_window_set_title(GTK_WINDOW(widget), "darktable");
+  gtk_window_set_title(GTK_WINDOW(widget), PACKAGE_NAME);
 
   g_signal_connect(G_OBJECT(widget), "delete_event",
                    G_CALLBACK(_gui_quit_callback), NULL);
@@ -3677,8 +3677,8 @@ void dt_gui_load_theme(const char *theme)
       // fallback to default theme
       g_free(path);
       // NOTE: When changing the default theme, don't forget to change it here!
-      path = g_build_filename(datadir, "themes", "darktable-elegant-grey.css", NULL);
-      dt_conf_set_string("ui_last/theme", "darktable-elegant-grey");
+      path = g_build_filename(datadir, "themes", "neutral-dark.css", NULL);
+      dt_conf_set_string("ui_last/theme", "neutral-dark");
     }
     else
       dt_conf_set_string("ui_last/theme", theme);
