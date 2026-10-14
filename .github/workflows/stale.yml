@@ -16,7 +16,7 @@ env:
 
 jobs:
   stale:
-    if: github.repository == 'darktable-org/darktable' || github.event_name == 'workflow_dispatch'
+    if: github.repository == 'darktable-org/darktable'  # fork: never run upstream publishing/housekeeping jobs
 
     permissions:
       issues: write  # for actions/stale to close stale issues

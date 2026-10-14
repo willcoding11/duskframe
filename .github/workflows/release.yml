@@ -1,0 +1,463 @@
+name: Release
+
+# Builds installers for all platforms and attaches them to a GitHub Release.
+# Asset names are STABLE (no version number) so that
+#   https://github.com/<user>/<repo>/releases/latest/download/<file>
+# URLs never change. Adapted from darktable's nightly.yml / ci.yml.
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:   # build only (artifacts); a Release is created only for tag runs
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  meta:
+    name: Read branding
+    if: github.repository != 'darktable-org/darktable'
+    runs-on: ubuntu-latest
+    outputs:
+      slug: ${{ steps.brand.outputs.slug }}
+      name: ${{ steps.brand.outputs.name }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: branding
+          fetch-depth: 1
+      - id: brand
+        shell: bash
+        run: |
+          set -e
+          . branding/brand.env
+          test -n "$BRAND_SLUG" && test -n "$BRAND_NAME"
+          echo "slug=$BRAND_SLUG" >> "$GITHUB_OUTPUT"
+          echo "name=$BRAND_NAME" >> "$GITHUB_OUTPUT"
+
+  # ---------------------------------------------------------------- Windows
+  windows:
+    name: Windows x64 (installer + portable)
+    needs: meta
+    runs-on: windows-latest
+    timeout-minutes: 180
+    env:
+      SLUG: ${{ needs.meta.outputs.slug }}
+      SRC_DIR: ${{ github.workspace }}/src
+      BUILD_DIR: ${{ github.workspace }}/build
+      INSTALL_PREFIX: ${{ github.workspace }}/install
+      ECO: -DBINARY_PACKAGE_BUILD=ON
+      CMAKE_BUILD_TYPE: Release
+      TARGET: skiptest
+      GENERATOR: Ninja
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          install: >-
+            git
+            intltool
+            po4a
+            zip
+          pacboy: >-
+            cc:p
+            cmake:p
+            libxslt:p
+            ninja:p
+            python-jsonschema:p
+            curl:p
+            drmingw:p
+            gcc-libs:p
+            gettext:p
+            gmic:p
+            graphicsmagick:p
+            gtk3:p
+            icu:p
+            imath:p
+            iso-codes:p
+            lcms2:p
+            lensfun:p
+            libavif:p
+            libgphoto2:p
+            libheif:p
+            libjpeg-turbo:p
+            libjxl:p
+            libpng:p
+            librsvg:p
+            libsecret:p
+            libtiff:p
+            libwebp:p
+            libxml2:p
+            lua54:p
+            omp:p
+            opencv:p
+            openexr:p
+            openjpeg2:p
+            osm-gps-map:p
+            portmidi:p
+            potrace:p
+            pugixml:p
+            SDL2:p
+            sqlite3:p
+            webp-pixbuf-loader:p
+            zlib:p
+          update: true
+      - name: Build and install exiv2 (same version as upstream nightly)
+        run: |
+          git clone --branch v0.27.7 --depth 1 https://github.com/Exiv2/exiv2 src-exiv2
+          cd src-exiv2
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=ON \
+            -DEXIV2_ENABLE_BMFF=ON \
+            -DEXIV2_ENABLE_NLS=ON \
+            -DEXIV2_ENABLE_VIDEO=OFF \
+            -DEXIV2_ENABLE_WIN_UNICODE=ON \
+            -DCMAKE_INSTALL_PREFIX=${MINGW_PREFIX}
+          cmake --build build
+          cmake --install build
+      - run: git config --global core.autocrlf input
+        shell: bash
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+          path: src
+          fetch-depth: 0   # full history + tags: version string is derived from git describe
+      - name: Get only those submodules that are needed for build
+        run: |
+          cd src
+          git submodule init
+          git config submodule.src/tests/integration.update none
+          git submodule update
+      - name: Ensure a release-* tag exists for version detection
+        run: |
+          cd src
+          git describe --tags --match 'release-*' >/dev/null 2>&1 || git tag release-5.6.2
+      - name: Update Lensfun data
+        run: lensfun-update-data || true
+      - name: Build and install
+        run: |
+          cmake -E make_directory "${BUILD_DIR}"
+          cmake -E make_directory "${INSTALL_PREFIX}"
+          $(cygpath ${SRC_DIR})/.ci/ci-script.sh
+      - name: Portable zip
+        run: |
+          set -e
+          mkdir -p dist stage
+          rm -rf "stage/${SLUG}"
+          cp -a "${INSTALL_PREFIX}" "stage/${SLUG}"
+          (cd stage && zip -q -r -9 "../dist/${SLUG}-windows-x64-portable.zip" "${SLUG}")
+      - name: Create multi-resolution icon file for installer
+        run: |
+          pacboy --noconfirm -S --needed imagemagick:p
+          magick "${SRC_DIR}"/data/pixmaps/256x256/darktable.png -define icon:auto-resize="256,128,64,48,32,16" "${INSTALL_PREFIX}"/dt_logo_multiresolution.ico
+      - name: Create Inno Setup installer
+        shell: pwsh
+        run: |
+          choco upgrade innosetup --no-progress -y
+          Set-Location "${{ env.INSTALL_PREFIX }}"
+          Copy-Item "${{ env.BUILD_DIR }}/darktable.iss" ./
+          iscc "darktable.iss"
+          $exe = Get-ChildItem Output/*.exe | Select-Object -First 1
+          if (-not $exe) { throw "Inno Setup produced no .exe" }
+          New-Item -ItemType Directory -Force "${{ github.workspace }}/dist" | Out-Null
+          Copy-Item $exe.FullName "${{ github.workspace }}/dist/${{ env.SLUG }}-windows-x64-setup.exe"
+      - name: List output
+        shell: bash
+        run: ls -l dist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: asset-windows
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 7
+
+  # ------------------------------------------------------------------ macOS
+  macos:
+    name: macOS ${{ matrix.arch }}
+    needs: meta
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { os: macos-15,       arch: arm64 }    # Apple Silicon
+          - { os: macos-15-intel, arch: x86_64 }   # Intel (macos-13 was retired Dec 2025)
+    env:
+      SLUG: ${{ needs.meta.outputs.slug }}
+      CC: cc
+      CXX: c++
+      MACOSX_DEPLOYMENT_TARGET: '15.0'
+      SRC_DIR: ${{ github.workspace }}/src
+      BUILD_DIR: ${{ github.workspace }}/src/build
+      INSTALL_PREFIX: ${{ github.workspace }}/src/build/macosx
+      ECO: -DBINARY_PACKAGE_BUILD=ON -DBUILD_CURVE_TOOLS=ON -DBUILD_NOISE_TOOLS=ON -DUSE_GRAPHICSMAGICK=ON -DUSE_IMAGEMAGICK=OFF
+      CMAKE_BUILD_TYPE: Release
+      TARGET: skiptest
+      GENERATOR: Ninja
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+          path: src
+          fetch-depth: 0
+      - name: Get only those submodules that are needed for build
+        run: |
+          cd src
+          git submodule init
+          git config submodule.src/tests/integration.update none
+          git submodule update
+      - name: Ensure a release-* tag exists for version detection
+        run: |
+          cd src
+          git describe --tags --match 'release-*' >/dev/null 2>&1 || git tag release-5.6.2
+      - name: Install base dependencies
+        run: |
+          brew untap --force aws/tap || true
+          brew update > /dev/null || true
+          cd src/.ci
+          export HOMEBREW_NO_INSTALL_UPGRADE=1
+          brew bundle --verbose || true
+          # Rebuild GraphicsMagick without installed modules so it can be bundled
+          export HOMEBREW_NO_INSTALL_FROM_API=1
+          brew developer on
+          gm_formula=`brew edit --quiet --print-path graphicsmagick`
+          cat $gm_formula | sed 's/--with-modules/--disable-installed/1' > gm_formula.tmp
+          mv gm_formula.tmp $gm_formula
+          brew reinstall --build-from-source --force --quiet graphicsmagick
+      - name: Build and install
+        run: |
+          cmake -E make_directory "${BUILD_DIR}"
+          cmake -E make_directory "${INSTALL_PREFIX}"
+          ./src/.ci/ci-script.sh
+      - name: Build app bundle (ad-hoc signed by upstream script)
+        run: ./src/packaging/macosx/3_make_hb_darktable_package.sh
+      - name: Ad-hoc codesign whole bundle (required to launch on Apple Silicon)
+        run: |
+          set -e
+          app=$(ls -d src/build/macosx/package/*.app | head -n1)
+          echo "Signing $app"
+          codesign --force --deep -s - "$app"
+          codesign --verify --deep --strict --verbose=2 "$app"
+      - name: Create DMG
+        run: ./src/packaging/macosx/4_make_hb_darktable_dmg.sh
+      - name: Stable file name
+        run: |
+          set -e
+          mkdir -p dist
+          dmg=$(ls src/build/macosx/*.dmg | head -n1)
+          cp "$dmg" "dist/${SLUG}-macos-${{ matrix.arch }}.dmg"
+          hdiutil verify "dist/${SLUG}-macos-${{ matrix.arch }}.dmg"
+          ls -l dist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: asset-macos-${{ matrix.arch }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 7
+
+  # ------------------------------------------------------------------ Linux
+  linux:
+    name: Linux x86_64 AppImage
+    needs: meta
+    runs-on: ubuntu-22.04   # old glibc (2.35) => widest AppImage compatibility
+    timeout-minutes: 180
+    env:
+      SLUG: ${{ needs.meta.outputs.slug }}
+      CC: gcc-12
+      CXX: g++-12
+      APPIMAGE_EXTRACT_AND_RUN: '1'
+      DARKTABLE_APPIMAGE_UPDATE: 'no'   # no update-info pointing at upstream darktable
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install \
+            gcc-12 g++-12 \
+            build-essential \
+            appstream \
+            desktop-file-utils \
+            gettext \
+            git \
+            gdb \
+            intltool \
+            libarchive-dev \
+            libatk1.0-dev \
+            libcairo2-dev \
+            libcolord-dev \
+            libcolord-gtk-dev \
+            libcups2-dev \
+            libcurl4-gnutls-dev \
+            libimage-exiftool-perl \
+            libfuse2 \
+            libgdk-pixbuf2.0-dev \
+            libglib2.0-dev \
+            libgmic-dev \
+            libgraphicsmagick1-dev \
+            libgtk-3-dev \
+            libinih-dev \
+            libjson-glib-dev \
+            liblcms2-dev \
+            liblensfun-dev \
+            liblensfun-bin \
+            liblensfun-data-v1 \
+            liblensfun1 \
+            libopencv-calib3d-dev \
+            libopencv-core-dev \
+            libopencv-features2d-dev \
+            libopencv-flann-dev \
+            libopencv-imgproc-dev \
+            libosmgpsmap-1.0-dev \
+            libpango1.0-dev \
+            libpng-dev \
+            libportmidi-dev \
+            libpotrace-dev \
+            libpugixml-dev \
+            librsvg2-dev \
+            libsaxon-java \
+            libsdl2-dev \
+            libsecret-1-dev \
+            libsqlite3-dev \
+            libtiff5-dev \
+            libwebp-dev \
+            libx11-dev \
+            libxml2-dev \
+            libxml2-utils \
+            ninja-build \
+            perl \
+            po4a \
+            python3-jsonschema \
+            xsltproc \
+            zlib1g-dev
+      - name: Add PPAs for newer multimedia libs
+        run: |
+          sudo add-apt-repository -y ppa:savoury1/graphics
+          sudo add-apt-repository -y ppa:savoury1/ffmpeg4
+          sudo add-apt-repository -y ppa:savoury1/display
+          sudo apt-get update
+      - name: Install extra dependencies
+        run: |
+          sudo apt-get -y install \
+            aom-tools \
+            libaom-dev \
+            libavif-dev \
+            libgphoto2-dev \
+            libde265-dev \
+            libimath-dev \
+            libjpeg-turbo8-dev \
+            libjxl-dev \
+            libopenexr-dev \
+            libopenh264-dev \
+            libopenjp2-7-dev \
+            libsharpyuv-dev \
+            libx265-dev \
+            libwebm-dev \
+            x11proto-dev \
+            libxfixes-dev
+      - name: Build and install libheif with built-in decoders
+        run: |
+          git clone --branch v1.23.5 --depth 1 https://github.com/strukturag/libheif src-libheif
+          cd src-libheif
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DENABLE_PLUGIN_LOADING=OFF \
+            -DWITH_LIBDE265=ON \
+            -DWITH_AOM_DECODER=ON \
+            -DWITH_AOM_ENCODER=ON \
+            -DWITH_OpenH264_DECODER=ON \
+            -DWITH_JPEG_DECODER=ON \
+            -DWITH_OpenJPEG_DECODER=ON \
+            -DWITH_LIBSHARPYUV=ON \
+            -DCMAKE_INSTALL_PREFIX=/usr
+          ninja -C build
+          sudo ninja -C build install
+      - name: Build and install a recent exiv2
+        run: |
+          git clone --branch v0.28.9 --depth 1 https://github.com/Exiv2/exiv2 src-exiv2
+          cd src-exiv2
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_SHARED_LIBS=ON \
+            -DEXIV2_ENABLE_NLS=ON \
+            -DEXIV2_ENABLE_VIDEO=OFF \
+            -DCMAKE_INSTALL_PREFIX=/usr
+          cmake --build build
+          sudo cmake --install build
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+          path: src
+          fetch-depth: 0
+      - name: Get only those submodules that are needed for build
+        run: |
+          cd src
+          git submodule init
+          git config submodule.src/tests/integration.update none
+          git submodule update
+          git describe --tags --match 'release-*' >/dev/null 2>&1 || git tag release-5.6.2
+      - name: Update Lensfun data
+        run: sudo lensfun-update-data
+      - name: Build AppImage
+        run: |
+          cd src
+          bash tools/appimage-build-script.sh
+      - name: Stable file name
+        run: |
+          set -e
+          mkdir -p dist
+          img=$(ls src/build/*.AppImage | head -n1)
+          cp "$img" "dist/${SLUG}-linux-x86_64.AppImage"
+          chmod +x "dist/${SLUG}-linux-x86_64.AppImage"
+          ls -l dist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: asset-linux
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 7
+
+  # ---------------------------------------------------------------- Release
+  release:
+    name: Publish GitHub Release
+    needs: [meta, windows, macos, linux]
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: asset-*
+          path: dist
+          merge-multiple: true
+      - name: Verify the expected set of files
+        env:
+          SLUG: ${{ needs.meta.outputs.slug }}
+        run: |
+          set -e
+          cd dist
+          for f in "$SLUG-macos-arm64.dmg" "$SLUG-macos-x86_64.dmg" \
+                   "$SLUG-windows-x64-setup.exe" "$SLUG-windows-x64-portable.zip" \
+                   "$SLUG-linux-x86_64.AppImage"; do
+            test -s "$f" || { echo "MISSING $f"; exit 1; }
+          done
+          sha256sum -- * > SHA256SUMS.txt
+          ls -l
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ needs.meta.outputs.name }} ${{ github.ref_name }}
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: dist/*

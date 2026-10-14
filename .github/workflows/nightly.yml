@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   AppImage:
-    if: github.repository == 'darktable-org/darktable' || github.event_name == 'workflow_dispatch'
+    if: github.repository == 'darktable-org/darktable'  # fork: never run upstream publishing/housekeeping jobs
     name: Nightly darktable AppImage
     runs-on: ${{ matrix.os }}
     strategy:
@@ -192,7 +192,7 @@ jobs:
           retention-days: 1
 
   Windows:
-    if: github.repository == 'darktable-org/darktable' || github.event_name == 'workflow_dispatch'
+    if: github.repository == 'darktable-org/darktable'  # fork: never run upstream publishing/housekeeping jobs
     name: Nightly darktable Windows
     runs-on: ${{ matrix.os }}
     strategy:
@@ -340,7 +340,7 @@ jobs:
           retention-days: 1
 
   macOS:
-    if: github.repository == 'darktable-org/darktable' || github.event_name == 'workflow_dispatch'
+    if: github.repository == 'darktable-org/darktable'  # fork: never run upstream publishing/housekeeping jobs
     name: Nightly darktable macOS
     runs-on: ${{ matrix.build.os }}
     strategy:
@@ -423,6 +423,7 @@ jobs:
           retention-days: 1
 
   upload_to_release:
+    if: github.repository == 'darktable-org/darktable'
     permissions:
       # We need write permission to update the nightly tag
       contents: write
