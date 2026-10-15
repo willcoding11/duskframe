@@ -19,17 +19,17 @@ $GhRepo    = 'duskframe'    # @brand
 # -----------------------------------------------------------------------------------------------------
 
 if (-not $BaseUrl)    { $BaseUrl = "https://github.com/$GhUser/$GhRepo/releases/latest/download" }
-if (-not $InstallDir) { $InstallDir = Join-Path $env:LOCALAPPDATA $BrandName }
+if (-not $InstallDir) { $InstallDir = Join-Path $env:LOCALAPPDATA "Programs\$BrandName" }  # not LOCALAPPDATA\<Brand>: that holds user settings
 $ProgressPreference = 'SilentlyContinue'   # much faster Invoke-WebRequest
 
 function Step($m) { Write-Host "==> $m" }
 $lnk = Join-Path ([Environment]::GetFolderPath('Programs')) "$BrandName.lnk"
 
 if ($Uninstall) {
-  $unins = Join-Path $InstallDir 'Uninstall.exe'
-  if ((Test-Path $unins) -and -not $Portable) {
-    Step "Running $unins /S"
-    if (-not $DryRun) { Start-Process $unins -ArgumentList '/S' -Wait }
+  $unins = Get-ChildItem $InstallDir -Filter 'unins*.exe' -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName
+  if ($unins -and -not $Portable) {
+    Step "Running $unins /VERYSILENT"
+    if (-not $DryRun) { Start-Process $unins -ArgumentList '/VERYSILENT' -Wait }
   } else {
     Step "Removing $InstallDir"
     if (-not $DryRun) { Remove-Item -Recurse -Force $InstallDir -ErrorAction SilentlyContinue }
@@ -44,7 +44,7 @@ $dest = Join-Path $tmp $file
 Step "Downloading $BaseUrl/$file"
 if ($DryRun) {
   if ($Portable) { Write-Host "[dry-run] unpack $file to $InstallDir + Start Menu shortcut" }
-  else { Write-Host "[dry-run] run $file /S /D=$InstallDir" }
+  else { Write-Host "[dry-run] run $file /VERYSILENT /DIR=$InstallDir" }
   return
 }
 New-Item -ItemType Directory -Force $tmp | Out-Null
@@ -54,14 +54,14 @@ try {
     Step "Unpacking to $InstallDir"
     New-Item -ItemType Directory -Force $InstallDir | Out-Null
     Expand-Archive -Force -Path $dest -DestinationPath $InstallDir
-    $exe = Get-ChildItem $InstallDir -Recurse -Filter "$Slug.exe" | Select-Object -First 1
+    $exe = Get-ChildItem $InstallDir -Recurse -Filter "darktable.exe" | Where-Object { $_.DirectoryName -like "*bin" } | Select-Object -First 1
     if ($exe) {
       $sc = (New-Object -ComObject WScript.Shell).CreateShortcut($lnk)
       $sc.TargetPath = $exe.FullName; $sc.WorkingDirectory = $exe.DirectoryName; $sc.Save()
     }
   } else {
     Step "Running silent installer"
-    Start-Process $dest -ArgumentList "/S /D=$InstallDir" -Wait   # NSIS: /D must be last
+    Start-Process $dest -ArgumentList "/VERYSILENT /SUPPRESSMSGBOXES /NORESTART /DIR=`"$InstallDir`"" -Wait   # Inno Setup flags (may show a UAC prompt)
   }
   Step "Done. Find $BrandName in the Start Menu."
 } finally {
